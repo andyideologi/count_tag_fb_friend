@@ -5,10 +5,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
         <meta name="description" content="">
         <meta name="author" content="">
-        <link rel="icon"  type="image/gif" sizes="16x16">
-        <title>Facebook Signup and Tag FB Friends</title>
+        <link rel="icon" href="images/viralfav.png" type="image/gif" sizes="16x16">
+        <title>Viral</title>
 
-       
+        <link href="css/style.default.css" rel="stylesheet">
 
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
@@ -16,9 +16,81 @@
         <script src="js/respond.min.js"></script>
         
         <![endif]-->
-     
-    </head>
+        <style type="text/css">
+       
+        
+        .ck li{
+            display: inline-block;
+            text-decoration: none;
+           
 
+            border-radius: 5px 5px;
+        }
+        
+        .panel-signin{
+            background: #E0DFDF;
+        }
+        .panel-signin .panel-body, .panel-signup .panel-body{
+            padding: 14px;
+        }
+       
+         .check{
+            display: block;
+            width: 23px;
+            margin: 5px auto;
+            height: 23px;
+            background-image: url(images/checkbox.png);
+            border-radius: 4px;
+            border: 1px solid #4C9C4E;
+            background-position: -105px -62px;
+            visibility:hidden;
+        }
+        .ck li .p{
+             border: 1px solid #ddd;
+             padding: 5px;
+             width:48px;
+             height:48px;
+            border-radius: 5px 5px;
+            background-image: url(images/social-icons.png);
+            cursor: pointer;
+        }
+        
+        .signin{background-color:#fff !important;}
+          .cup{
+            border-radius: 5px 5px;
+            background-color: #3B589E;
+            width: 77%;
+            margin: 0 auto;
+        }
+        
+        .cup .incup{
+            display: inline-block;
+            text-decoration: none;
+            padding: 3px;
+        }
+        .steptext{
+            color:#2BC2D4;
+        }
+        .cup-link{
+            color:#E8E3E3
+        }
+        .panel-signin{
+            background: #E0DFDF;
+        }
+       
+        .panel-signin .panel-body, .panel-signup .panel-body{
+            padding: 14px;
+        }
+        .cup{cursor:pointer;}
+        .cup:hover a{color:#fff !important;}
+        .signin{background-color:#fff !important;}
+        .error{
+        
+        font-size:15px; color:red; font-style: italic;
+        }
+        </style>
+    </head>
+<?php //print_r($view); ?>
     <body class="signin">      
     <!-- for fb signup-->  
     <section id="sec1">
@@ -30,7 +102,7 @@
                     
                      
                             
-                          <ul class=" cup"><li class="incup"><a class="cup-link"  onClick="logInWithFacebook()">Sign Up With Facebook</a></li></ul>
+                          <ul class=" cup"><li class="incup" style="border-left: 1px solid #fff;"><img  src="images/f.png" style="width:50px; margin-left:-96px;"></li><li class="incup"><a class="cup-link"  onClick="logInWithFacebook()">Sign Up With Facebook</a></li></ul>
                           
 
 
@@ -47,7 +119,7 @@
             <div class="panel panel-signin">
                 <div class="panel-body text-center cupan">
                     <div class="steptext"><strong>Step 2 Of 2</strong></div>
-                    <input type="hidden" id="tags" value="<?php if(isset($view['unlock_no_of_tags'])) echo $view['unlock_no_of_tags']; ?>"> 
+                    <input type="hidden" id="tags" value="<?php if(isset($view['unlock_no_of_tags'])) echo $view['unlock_no_of_tags']; ?>">
                     <h4>Tag <?php echo $view['unlock_no_of_tags']; ?> facebook friends and get the coupon code :</h4>
                         
                       <ul class="ck" style="margin-left: -38px;">
@@ -67,11 +139,10 @@
             
             
         </section>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 
-  <script type="text/javascript">
-
-
-  logInWithFacebook = function() {   // This login function get the access token and stores in coockie
+<script type="text/javascript">
+  logInWithFacebook = function() {
 
     FB.login(function(response) {
       if (response.authResponse) {
@@ -80,37 +151,35 @@
         // a PHP script that grabs the signed request from the cookie.
         var accessToken = response.authResponse.accessToken;
         document.getElementById('sec2').style.display='block';
-        document.getElementById('sec1').style.display='none';
+         document.getElementById('sec1').style.display='none';
         //alert(accessToken);
 
-            FB.api('/v2.2/me?fields=id,name,email', function(response) {  // get name and email
+           FB.api('/v2.2/me?fields=id,name,email', function(response) {
                       var collect_fb_id = response.id;
 
                       var name = response.name;
                       var email = response.email;
-                      
-            });
+                      AjaxResponse(collect_fb_id,name,email);
+           });
         
       } else {
       
          document.getElementById('fb_error'). innerHTML ="";
          document.getElementById('fb_error'). innerHTML ="You cancelled login. Please try again!!";
       }
-
     });
     return false;
 
   };
 
-  window.fbAsyncInit = function() {  // initialise the fb connection
+  window.fbAsyncInit = function() {
 
     FB.init({
-      appId: '1357040784322468',  // enter facebook app ID
+      appId: '1073109212776631',
       cookie: true, // This is important, it's not enabled by default
       version: 'v2.2'
     });
   };
-
 
   (function(d, s, id){
     var js, fjs = d.getElementsByTagName(s)[0];
@@ -120,12 +189,12 @@
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));
 
-   function postToFeed() {   // funtion that shares the post
+   function postToFeed() {
  
-        // calling the API ... content of post being shared...can be static or dynamic
+        // calling the API ...
         var obj = {
           method: 'feed',
-          redirect_uri: 'http://app.viral-source.com/',
+          redirect_uri: 'http://localhost:8888/viralso_app/index.php',
           link: '<?php echo $view['unlock_post_link']; ?>', //  URL must be valid to show popup ..otherwise popup will not load
           picture: 'http://app.viral-source.com/<?php echo $view['unlock_post_image_path']; ?>',
           name: '<?php echo $view['unlock_post_title']; ?>',
@@ -134,16 +203,15 @@
         };
  
         function callback(response) {
-        
+         // document.getElementById('msg').innerHTML = "Post ID: " + response['post_id'];
 
               FB.api(
-                      response['post_id'],    // you will get the post id of post which you have shared
+                      response['post_id'],
                       function (response) {
-
                         if (response && !response.error) {
                           /* handle the result */
                           //console.log(response);
-                          var story = response.story;   // capture story which shows with whom you have shared the post
+                          var story = response.story;
                           console.log(response.story);
                           var res = story.split("with");
 
@@ -151,70 +219,91 @@
 
                         
                          
-                         if( res[1] ){   // check whether friend is tagged or not
+                         if( res[1] ){
                          
-                               var tags_count;
-                               var tags_string = res[1];
-                               var tags = tags_string.split(" and ");  // check more than 2 friends are tagged or not
-                               
-                                if(tags.length == 2){ 
-                                
-                                  console.log(tags[1]);
-                                  var tags_1 = tags[1];
-                                  var tags_and = tags_1.split(" ");
-                                  
-                                      tags_count = parseInt(tags_and[0]);
-                                  
-                                      if( tags_count >= 2 ){
-                                      
-                                      tags_count = tags_count +1;
-                                  
-                                      
-                                      }else{
-                                      
-                                      tags_count = 2;
-                                      console.log(tags_count);
-                                      
-                                      }
-                                  
-                                  
-                                }else{
-                                
-                                  tags_count = 1;
-                                  console.log(tags_count);
-                                }
-                                
-                                               // document.location.href = 'index.php?c=api&m=coupon';
-                                                   var get_total_tags = document.getElementById('tags').value;
-                                                   if( get_total_tags <= tags_count){
-                                                   
-                                                      document.location.href = 'index.php?c=api&m=coupon'; // if count matches..go ahead
-                                                   
-                                                   }else{
-                                                   
-                                                      document.getElementById('error_tags'). innerHTML ="";
-                                                      document.getElementById('error_tags'). innerHTML ="You haven't tagged <?php echo $view['unlock_no_of_tags']; ?> friends. Please try again!!";
-                                                   
-                                                   }
+         var tags_count;
+         var tags_string = res[1];
+          var tags = tags_string.split(" and ");
+         
+          if(tags.length == 2){
+          
+            console.log(tags[1]);
+            var tags_1 = tags[1];
+            var tags_and = tags_1.split(" ");
+            
+                tags_count = parseInt(tags_and[0]);
+            
+            if( tags_count >= 2 ){
+            
+            tags_count = tags_count +1;
+        
+            
+            }else{
+            
+            tags_count = 2;
+            console.log(tags_count);
+            
+            }
+            
+            
+          }else{
+          
+            tags_count = 1;
+            console.log(tags_count);
+          }
+          
+                         // document.location.href = 'index.php?c=api&m=coupon';
+                             var get_total_tags = document.getElementById('tags').value;
+                             if( get_total_tags <= tags_count){
+                             
+                                document.location.href = 'index.php?c=api&m=coupon';
+                             
+                             }else{
+                             
+                                document.getElementById('error_tags'). innerHTML ="";
+                                document.getElementById('error_tags'). innerHTML ="You haven't tagged <?php echo $view['unlock_no_of_tags']; ?> friends. Please try again!!";
+                             
+                             }
 
                          }else{
                             document.getElementById('error_tags'). innerHTML ="";
                             document.getElementById('error_tags'). innerHTML ="You haven't tagged anyone. Please try again!!";
                          }
 
-                      }else{
+                        }else{
 
-                        console.log(response.error);
+                           console.log(response.error);
 
+                        }
                       }
-
-                   }
-              );
+                  );
         }
  
-        FB.ui(obj, callback);  // call to share the post and get response
+        FB.ui(obj, callback);
       }
       
-    
+
+      // SEND COLLECTED DATA TO AJAX TO INSERT INTO DATABASE AND TO RESPONDER.....
+      function AjaxResponse(collect_fb_id,name,email)
+      {
+        var collect_fb_id=collect_fb_id;
+        var name=name;
+        var email=email;
+        //alert(collect_fb_id);
+        
+
+           $.ajax({
+                    //dataType: 'json',?id=" + id + "&name=" + userName + "&email=" + emailId
+                    type: 'POST',
+                    url: 'index.php?c=ajax&m=load_ajax&collect_fb_id='+collect_fb_id + '&name=' + name + '&email=' +email, 
+                    data:"",
+                    success:function(response)
+                                        {  
+                                           return true;
+                                           //alert(response);
+                                        }
+                        });
+                    
+        }
       
 </script>
